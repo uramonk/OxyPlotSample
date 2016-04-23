@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,19 @@ namespace OxyPlotSample
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.FileName = "";
+            ofd.Filter = "CSVファイル(.csv)|*.csv";
+            if (ofd.ShowDialog() == true)
+            {
+                String[] names = ofd.FileName.Split('\\');
+                Console.WriteLine(names[names.Length - 1]);
+                this.mainViewModel.Title = names[names.Length - 1];
+            }
         }
     }
 }

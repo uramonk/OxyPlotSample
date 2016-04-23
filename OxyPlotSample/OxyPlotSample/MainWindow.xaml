@@ -6,15 +6,21 @@
         xmlns:oxy="http://oxyplot.org/wpf"
         xmlns:local="clr-namespace:OxyPlotSample"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="359.265" Width="525">
     <Window.DataContext>
-        <local:MainViewModel/>
+        <local:MainViewModel x:Name="mainViewModel"/>
     </Window.DataContext>
     <Grid>
-        <oxy:Plot Title="{Binding Title}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="50" />
+        </Grid.RowDefinitions>
+
+        <oxy:Plot Title="{Binding Title}" Grid.Row="0">
             <oxy:Plot.Series>
                 <oxy:LineSeries ItemsSource="{Binding Points}"/>
             </oxy:Plot.Series>
         </oxy:Plot>
+        <Button Grid.Row="1" Click="Button_Click">Select CSV File</Button>
     </Grid>
 </Window>
