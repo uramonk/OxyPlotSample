@@ -1,6 +1,9 @@
-﻿using Microsoft.Win32;
+﻿using CsvHelper;
+using Microsoft.Win32;
+using OxyPlot;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -34,9 +37,31 @@ namespace OxyPlotSample
             if (ofd.ShowDialog() == true)
             {
                 String[] names = ofd.FileName.Split('\\');
-                Console.WriteLine(names[names.Length - 1]);
                 this.mainViewModel.Title = names[names.Length - 1];
+
+                loadCsv(ofd.FileName);
             }
+        }
+
+        private void loadCsv(string path)
+        {
+            CsvParser parser = new CsvParser(new StreamReader(path, Encoding.GetEncoding("utf-8")));
+            parser.Configuration.HasHeaderRecord = true;
+            parser.Configuration.RegisterClassMap<CsvDataPointMap>();
+
+            CsvReader reader = new CsvReader(parser);
+            List<CsvDataPoint> csvDataPoints = reader.GetRecords<CsvDataPoint>().ToList();
+            string[] headers = reader.FieldHeaders;
+
+            IList<DataPoint> points = new List<DataPoint>();
+            for(int i = 0; i < csvDataPoints.Count; i++)
+            {
+                CsvDataPoint csvDataPoint = csvDataPoints[i];
+                points.Add(new DataPoint(csvDataPoint.X, csvDataPoint.Y));
+                Console.WriteLine(csvDataPoint.X + ", " + csvDataPoint.Y);
+            }
+
+            this.mainViewModel.Points = points;
         }
     }
 }

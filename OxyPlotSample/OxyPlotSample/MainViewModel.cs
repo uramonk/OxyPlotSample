@@ -11,6 +11,7 @@ namespace OxyPlotSample
     public class MainViewModel : INotifyPropertyChanged
     {
         private string title;
+        private IList<DataPoint> points;
 
         public MainViewModel()
         {
@@ -39,7 +40,19 @@ namespace OxyPlotSample
             }
         }
 
-        public IList<DataPoint> Points { get; set; }
+        public IList<DataPoint> Points
+        {
+            get
+            {
+                return points;
+            }
+
+            set
+            {
+                points = value;
+                this.NotifyPropertyChanged("Points");
+            }
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
